@@ -11,9 +11,9 @@ import {
 import FormContainer from './FormContainer'
 import FormInput from './FormInput'
 import FormDropdown from './FormDropdown'
-import FormDateOfBirth from './FormDateOfBirth'
 import FormSubmitButton from './FormSubmitButton'
 import { StackActions } from '@react-navigation/native'
+import { useLogin } from '../context/LoginProvider'
 
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -55,6 +55,8 @@ const validationSchema = Yup.object({
 })
 
 const SignupForm = ({ navigation }) => {
+	const { setIsLoggedIn, setProfile } = useLogin()
+
 	const userInfo = {
 		fullname: '',
 		phoneNumber: '',
@@ -142,11 +144,12 @@ const SignupForm = ({ navigation }) => {
 				password: values.password,
 			})
 			if (signInRes.data.success) {
-				navigation.dispatch(
-					StackActions.replace('ImageUpload', {
-						token: signInRes.data.token,
-					})
-				)
+				setIsLoggedIn(true)
+				// navigation.dispatch(
+				// 	StackActions.replace('ImageUpload', {
+				// 		token: signInRes.data.token,
+				// 	})
+				// )
 			}
 		}
 
