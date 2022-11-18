@@ -1,9 +1,9 @@
 {
   "expoServerPort": 19000,
   "packagerPort": 19000,
-  "expoServerNgrokUrl": "https://wu-n4b.anonymous.mobile-app-2.exp.direct",
-  "packagerNgrokUrl": "https://wu-n4b.anonymous.mobile-app-2.exp.direct",
-  "ngrokPid": 12612,
+  "expoServerNgrokUrl": "https://wu-n4b.anonymous.mobile-app.exp.direct",
+  "packagerNgrokUrl": "https://wu-n4b.anonymous.mobile-app.exp.direct",
+  "ngrokPid": 11376,
   "packagerPid": null,
   "webpackServerPort": null
 }

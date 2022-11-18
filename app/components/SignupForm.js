@@ -144,12 +144,11 @@ const SignupForm = ({ navigation }) => {
 				password: values.password,
 			})
 			if (signInRes.data.success) {
+				console.log('Here!')
+				// setProfile(res.data.user)
 				setIsLoggedIn(true)
-				// navigation.dispatch(
-				// 	StackActions.replace('ImageUpload', {
-				// 		token: signInRes.data.token,
-				// 	})
-				// )
+				// navigation.dispatch(StackActions.replace('Home'), {})
+				console.log('Ok!')
 			}
 		}
 
@@ -245,11 +244,13 @@ const SignupForm = ({ navigation }) => {
 								label='Address'
 								placeholder=''
 							/>
-							<FormDropdown
+							<FormInput
 								value={gender}
 								error={touched.gender && errors.gender}
-								onSelect={handleChange('gender')}
+								onChangeText={handleChange('gender')}
+								onBlur={handleBlur('gender')}
 								label='Gender'
+								placeholder=''
 							/>
 							<FormInput
 								value={dateOfBirth}

@@ -15,7 +15,7 @@ export const getFeaturedPosts = async () => {
 export const getLatestPosts = async (pageNo, limit) => {
 	try {
 		const { data } = await client(
-			`/post/posts?limit=${limit}&pageNo=${pageNo}`
+			`/post/posts?pageNo=${pageNo}&limit=${limit}`
 		)
 		return data
 	} catch (error) {

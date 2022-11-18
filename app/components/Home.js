@@ -67,6 +67,9 @@ export default function Home({ navigation }) {
 		pageNo += 1
 		setBusy(true)
 		const { error, posts, postCount } = await getLatestPosts(pageNo, limit)
+
+		console.log('post: ', posts)
+
 		setBusy(false)
 		if (error) return console.log(error)
 
@@ -83,10 +86,13 @@ export default function Home({ navigation }) {
 		}
 	}, [])
 
+	console.log('latestPosts', latestPosts)
+	console.log(latestPosts.length)
+
 	const ListHeaderComponent = useCallback(() => {
 		return (
 			<View>
-				{featuredPosts.length ? (
+				{featuredPosts ? (
 					<Slider
 						onSlidePress={fetchSinglePost}
 						data={featuredPosts}
@@ -131,29 +137,36 @@ export default function Home({ navigation }) {
 	}
 
 	return (
-		<FlatList
-			data={latestPosts}
-			keyExtractor={(item) => item.id}
-			contentContainerStyle={{ paddingHorizontal: 10, paddingBottom: 20 }}
-			ListHeaderComponent={ListHeaderComponent}
-			ItemSeparatorComponent={ItemSeparatorComponent}
-			renderItem={renderItem}
-			onEndReached={async () => await fetchMorePosts()}
-			onEndReachedThreshold={0}
-			ListFooterComponent={() => {
-				return reachedToEnd ? (
-					<Text
-						style={{
-							fontWeight: 'bold',
-							color: '#383838',
-							textAlign: 'center',
-							paddingVertical: 15,
-						}}
-					>
-						You reached to end!
-					</Text>
-				) : null
-			}}
-		/>
+		<>
+			{latestPosts ? (
+				<FlatList
+					data={latestPosts}
+					keyExtractor={(item) => Math.random()}
+					contentContainerStyle={{
+						paddingHorizontal: 10,
+						paddingBottom: 20,
+					}}
+					ListHeaderComponent={ListHeaderComponent}
+					ItemSeparatorComponent={ItemSeparatorComponent}
+					renderItem={renderItem}
+					onEndReached={async () => await fetchMorePosts()}
+					onEndReachedThreshold={0}
+					ListFooterComponent={() => {
+						return reachedToEnd ? (
+							<Text
+								style={{
+									fontWeight: 'bold',
+									color: '#383838',
+									textAlign: 'center',
+									paddingVertical: 15,
+								}}
+							>
+								You reached to end!
+							</Text>
+						) : null
+					}}
+				/>
+			) : null}
+		</>
 	)
 }
