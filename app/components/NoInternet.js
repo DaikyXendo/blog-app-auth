@@ -9,13 +9,13 @@ const NoInternet = ({ onRefreshPress }) => {
 				color='#383838'
 				size={35}
 			/>
-			<Text style={styles.text}>No Internet</Text>
+			<Text style={styles.text}>Không có kết nối Internet</Text>
 			<Pressable
 				onPress={onRefreshPress}
 				style={{ flexDirection: 'row', alignItems: 'center' }}
 			>
 				<MaterialCommunityIcons name='refresh' size={35} />
-				<Text style={styles.text}>No Internet</Text>
+				<Text style={styles.text}>Không có kết nối Internet</Text>
 			</Pressable>
 		</View>
 	)

@@ -24,34 +24,44 @@ const phoneRegx = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im
 const dateOfBirthRegx =
 	/^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]|(?:Jan|Mar|May|Jul|Aug|Oct|Dec)))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2]|(?:Jan|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)(?:0?2|(?:Feb))\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9]|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep))|(?:1[0-2]|(?:Oct|Nov|Dec)))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/
 
+const genderRegx = /(?=(Nam|Nữ|nam|nữ))/
+
 const validationSchema = Yup.object({
 	fullname: Yup.string()
 		.trim()
-		.min(3, 'Invalid name!')
-		.required('Name is required!'),
+		.min(3, 'Tên không hợp lệ!')
+		.required('Bạn cần điền tên!'),
 	phoneNumber: Yup.string()
-		.matches(phoneRegx, 'Invalid phone number!')
-		.required('Phone number is required!'),
-	email: Yup.string().email('Invalid email!').required('Email is required!'),
+		.matches(phoneRegx, 'Số điện thoại không hợp lệ!')
+		.required('Bạn cần điền số điện thoại!'),
+	email: Yup.string()
+		.email('Email không hợp lệ!')
+		.required('Bạn cần điền email!'),
 	password: Yup.string()
 		.trim()
-		.min(8, 'Password is too short!')
-		.required('Password is required!'),
+		.min(8, 'Mật khẩu quá ngắn!')
+		.required('Bạn cần điền mật khẩu!'),
 	confirmPassword: Yup.string().equals(
 		[Yup.ref('password'), null],
-		'Password does not match!'
+		'Mật khẩu không khớp!'
 	),
 	address: Yup.string()
 		.trim()
-		.min(3, 'Invalid address!')
-		.required('Address is required!'),
+		.min(3, 'Địa chỉ không hợp lệ!')
+		.required('Bạn cần điền địa chỉ của bạn!'),
+	gender: Yup.string()
+		.matches(genderRegx, 'Giới tính không hợp lệ!')
+		.required('Bạn cần điền giới tính của bạn!'),
 	dateOfBirth: Yup.string()
-		.matches(dateOfBirthRegx, 'Invalid date of birth!')
-		.required('Date of birth is required!'),
+		.matches(dateOfBirthRegx, 'Ngày tháng năm sinh không hợp lệ!')
+		.required('Bạn cần điền ngày tháng năm sinh!'),
 	presenter: Yup.string()
 		.trim()
-		.min(3, 'Invalid presenter!')
-		.required('Presenter is required!'),
+		.min(3, 'Họ tên người giới thiệu quá ngắn!')
+		.required('Bạn cần điền họ tên người giới thiệu!'),
+	presenterPhoneNumber: Yup.string()
+		.matches(phoneRegx, 'Số điện thoại không hợp lệ!')
+		.required('Bạn cần điền số điện thoại!'),
 })
 
 const SignupForm = ({ navigation }) => {
@@ -67,6 +77,7 @@ const SignupForm = ({ navigation }) => {
 		gender: '',
 		dateOfBirth: '',
 		presenter: '',
+		presenterPhoneNumber: '',
 	}
 
 	const [error, setError] = useState('')
@@ -81,6 +92,7 @@ const SignupForm = ({ navigation }) => {
 		gender,
 		dateOfBirth,
 		presenter,
+		presenterPhoneNumber,
 	} = userInfo
 
 	const handleOnChangeText = (value, fieldName) => {
@@ -144,11 +156,9 @@ const SignupForm = ({ navigation }) => {
 				password: values.password,
 			})
 			if (signInRes.data.success) {
-				console.log('Here!')
 				// setProfile(res.data.user)
 				setIsLoggedIn(true)
 				// navigation.dispatch(StackActions.replace('Home'), {})
-				console.log('Ok!')
 			}
 		}
 
@@ -182,6 +192,7 @@ const SignupForm = ({ navigation }) => {
 						gender,
 						dateOfBirth,
 						presenter,
+						presenterPhoneNumber,
 					} = values
 					return (
 						<>
@@ -190,8 +201,8 @@ const SignupForm = ({ navigation }) => {
 								error={touched.fullname && errors.fullname}
 								onChangeText={handleChange('fullname')}
 								onBlur={handleBlur('fullname')}
-								label='Full Name'
-								placeholder='John Smith'
+								label='Họ và tên'
+								placeholder='Nguyễn Văn A'
 							/>
 							<FormInput
 								value={phoneNumber}
@@ -201,7 +212,7 @@ const SignupForm = ({ navigation }) => {
 								onChangeText={handleChange('phoneNumber')}
 								onBlur={handleBlur('phoneNumber')}
 								autoCapitalize='none'
-								label='Phone Number'
+								label='Số điện thoại'
 								placeholder=''
 							/>
 							<FormInput
@@ -220,7 +231,7 @@ const SignupForm = ({ navigation }) => {
 								onBlur={handleBlur('password')}
 								autoCapitalize='none'
 								secureTextEntry
-								label='Password'
+								label='Mật khẩu'
 								placeholder='********'
 							/>
 							<FormInput
@@ -233,7 +244,7 @@ const SignupForm = ({ navigation }) => {
 								onBlur={handleBlur('confirmPassword')}
 								autoCapitalize='none'
 								secureTextEntry
-								label='Confirm Password'
+								label='Xác nhận mật khẩu'
 								placeholder='********'
 							/>
 							<FormInput
@@ -241,7 +252,7 @@ const SignupForm = ({ navigation }) => {
 								error={touched.address && errors.address}
 								onChangeText={handleChange('address')}
 								onBlur={handleBlur('address')}
-								label='Address'
+								label='Địa chỉ'
 								placeholder=''
 							/>
 							<FormInput
@@ -249,7 +260,7 @@ const SignupForm = ({ navigation }) => {
 								error={touched.gender && errors.gender}
 								onChangeText={handleChange('gender')}
 								onBlur={handleBlur('gender')}
-								label='Gender'
+								label='Giới tính'
 								placeholder=''
 							/>
 							<FormInput
@@ -258,20 +269,34 @@ const SignupForm = ({ navigation }) => {
 									touched.dateOfBirth && errors.dateOfBirth
 								}
 								onChangeText={handleChange('dateOfBirth')}
-								label='Date of Birth'
+								label='Ngày tháng năm sinh'
 							/>
 							<FormInput
 								value={presenter}
 								error={touched.presenter && errors.presenter}
 								onChangeText={handleChange('presenter')}
 								onBlur={handleBlur('presenter')}
-								label='Presenter'
+								label='Người giới thiệu'
 								placeholder=''
 							/>
 							<FormSubmitButton
 								submitting={isSubmitting}
 								onPress={handleSubmit}
-								title='Sign up'
+								title='Đăng ký'
+							/>
+							<FormInput
+								value={presenterPhoneNumber}
+								error={
+									touched.presenterPhoneNumber &&
+									errors.presenterPhoneNumber
+								}
+								onChangeText={handleChange(
+									'presenterPhoneNumber'
+								)}
+								onBlur={handleBlur('presenterPhoneNumber')}
+								autoCapitalize='none'
+								label='Số điện thoại người giới thiệu'
+								placeholder=''
 							/>
 						</>
 					)

@@ -2,7 +2,7 @@ import client from './client'
 
 export const getFeaturedPosts = async () => {
 	try {
-		const { data } = await client('/post/featured-posts')
+		const { data } = await client('/api/post/featured-posts')
 		return data
 	} catch (error) {
 		const { response } = error
@@ -15,7 +15,7 @@ export const getFeaturedPosts = async () => {
 export const getLatestPosts = async (pageNo, limit) => {
 	try {
 		const { data } = await client(
-			`/post/posts?pageNo=${pageNo}&limit=${limit}`
+			`/api/post/posts?pageNo=${pageNo}&limit=${limit}`
 		)
 		return data
 	} catch (error) {
@@ -28,7 +28,7 @@ export const getLatestPosts = async (pageNo, limit) => {
 }
 export const getSinglePosts = async (slug) => {
 	try {
-		const { data } = await client(`/post/single/${slug}`)
+		const { data } = await client(`/api/post/single/${slug}`)
 		return data
 	} catch (error) {
 		const { response } = error
@@ -40,7 +40,7 @@ export const getSinglePosts = async (slug) => {
 }
 export const getSimilarPosts = async (id) => {
 	try {
-		const { data } = await client(`/post/related-posts/${id}`)
+		const { data } = await client(`/api/post/related-posts/${id}`)
 		return data
 	} catch (error) {
 		const { response } = error
@@ -52,7 +52,7 @@ export const getSimilarPosts = async (id) => {
 }
 export const searchPosts = async (query) => {
 	try {
-		const { data } = await client(`/post/search?title=${query}`)
+		const { data } = await client(`/api/post/search?title=${query}`)
 		return data
 	} catch (error) {
 		const { response } = error

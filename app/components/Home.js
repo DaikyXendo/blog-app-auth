@@ -5,59 +5,32 @@ import PostListItem from '../components/PostListItem'
 import Slider from '../components/Slider'
 import Seprator from './Seprator'
 
-const data = [
-	{
-		id: '1',
-		thumbnail:
-			'https://res.cloudinary.com/do6p6bfdg/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1659727952/rzpsktf9jj6rfctoebvx.jpg',
-		title: 'Programming language to learn in 2022',
-		author: 'Admin',
-		createdAt: Date.now(),
-	},
-	{
-		id: '2',
-		thumbnail:
-			'https://res.cloudinary.com/do6p6bfdg/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1659701527/hu7nd2vl9cykyh2syiv1.jpg',
-		title: 'Know everything about crypto currency about crypto',
-		author: 'Admin',
-		createdAt: Date.now(),
-	},
-	{
-		id: '3',
-		thumbnail:
-			'https://res.cloudinary.com/do6p6bfdg/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1659728377/rw05itulvhwnfftrqqeb.jpg',
-		title: 'How to make your first app with react and django?',
-		author: 'Admin',
-		createdAt: Date.now(),
-	},
-	{
-		id: '4',
-		thumbnail:
-			'https://res.cloudinary.com/do6p6bfdg/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1659728309/uyjttneujdsy5uncylev.jpg',
-		title: 'Book to read as a programmer in 2022',
-		author: 'Admin',
-		createdAt: Date.now(),
-	},
-]
-
 let pageNo = 0
 const limit = 5
 export default function Home({ navigation }) {
-	const [featuredPosts, setFeaturedPosts] = useState([])
-	const [latestPosts, setLatestPosts] = useState([])
+	const [featuredPosts, setFeaturedPosts] = useState()
+	const [latestPosts, setLatestPosts] = useState()
 	const [reachedToEnd, setReachedToEnd] = useState(false)
 	const [busy, setBusy] = useState(false)
 
 	const fetchFeaturedPosts = async () => {
-		const { error, posts } = await getFeaturedPosts()
+		const { error, post } = await getFeaturedPosts()
 
-		if (error) return console.log('Err', error)
-		setFeaturedPosts(posts)
-		// console.log("length", data);
+		if (error) {
+			console.log(error)
+			return
+		}
+
+		setFeaturedPosts(post)
 	}
+
 	const fetchLatestdPosts = async () => {
 		const { error, posts } = await getLatestPosts(pageNo, limit)
-		if (error) return console.log(error)
+
+		if (error) {
+			console.log(error)
+			return
+		}
 
 		setLatestPosts(posts)
 	}
@@ -66,12 +39,9 @@ export default function Home({ navigation }) {
 		if (reachedToEnd || busy) return
 		pageNo += 1
 		setBusy(true)
-		const { error, posts, postCount } = await getLatestPosts(pageNo, limit)
-
-		console.log('post: ', posts)
+		const { posts, postCount } = await getLatestPosts(pageNo, limit)
 
 		setBusy(false)
-		if (error) return console.log(error)
 
 		if (postCount === latestPosts.length) return setReachedToEnd(true)
 		setLatestPosts([...latestPosts, ...posts])
@@ -86,9 +56,6 @@ export default function Home({ navigation }) {
 		}
 	}, [])
 
-	console.log('latestPosts', latestPosts)
-	console.log(latestPosts.length)
-
 	const ListHeaderComponent = useCallback(() => {
 		return (
 			<View>
@@ -96,7 +63,7 @@ export default function Home({ navigation }) {
 					<Slider
 						onSlidePress={fetchSinglePost}
 						data={featuredPosts}
-						title='Featured Posts'
+						title='Tin hàng đầu'
 					/>
 				) : null}
 				<View style={{ marginTop: 50 }}>
@@ -115,6 +82,7 @@ export default function Home({ navigation }) {
 			</View>
 		)
 	}, [featuredPosts])
+
 	const fetchSinglePost = async (postInfo) => {
 		const slug = postInfo.slug || postInfo
 		const { error, post } = await getSinglePosts(slug)
@@ -141,7 +109,7 @@ export default function Home({ navigation }) {
 			{latestPosts ? (
 				<FlatList
 					data={latestPosts}
-					keyExtractor={(item) => Math.random()}
+					keyExtractor={(item) => item.id}
 					contentContainerStyle={{
 						paddingHorizontal: 10,
 						paddingBottom: 20,
@@ -161,7 +129,7 @@ export default function Home({ navigation }) {
 									paddingVertical: 15,
 								}}
 							>
-								You reached to end!
+								Đã hết bài viết!
 							</Text>
 						) : null
 					}}

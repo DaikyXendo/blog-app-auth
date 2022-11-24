@@ -24,12 +24,13 @@ const LoginForm = () => {
 
 	const isValidForm = () => {
 		if (!isValidObjField(userInfo))
-			return updateError('Required all fields!', setError)
+			return updateError('Cần nhập tất cả các trường!', setError)
 
-		if (!isValidEmail(email)) return updateError('Invalid email!', setError)
+		if (!isValidEmail(email))
+			return updateError('Email không hợp lệ!', setError)
 
 		if (!password.trim() || password.length < 8)
-			return updateError('Password is too short!', setError)
+			return updateError('Password quá ngắn!', setError)
 
 		return true
 	}
@@ -76,7 +77,7 @@ const LoginForm = () => {
 				autoCapitalize='none'
 				secureTextEntry
 			/>
-			<FormSubmitButton onPress={submitForm} title='Login' />
+			<FormSubmitButton onPress={submitForm} title='Đăng nhập' />
 		</FormContainer>
 	)
 }

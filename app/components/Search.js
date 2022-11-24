@@ -39,13 +39,13 @@ const Search = ({ navigation }) => {
 				value={query}
 				onChangeText={(text) => setQuery(text)}
 				onSubmitEditing={handleOnSubmit}
-				placeholder='Search...'
+				placeholder='Tìm kiếm...'
 				style={styles.searchInput}
 			/>
 
 			<ScrollView>
 				{notFound ? (
-					<Text style={styles.text}>Not Found</Text>
+					<Text style={styles.text}>Không tìm thấy</Text>
 				) : (
 					result.map((post) => {
 						return (

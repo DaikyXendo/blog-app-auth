@@ -34,15 +34,17 @@ const Slider = ({ data, title, onSlidePress }) => {
 	}, [data.length])
 
 	const flateListRef = useRef()
+
 	const handleToScrollTo = (index) => {
 		flateListRef.current.scrollToIndex({ animated: false, index })
 	}
+
 	const startSlider = () => {
 		if (currentSlideIndex <= dataToRender.length - 2) {
 			intervalId = setInterval(() => {
 				flateListRef.current?.scrollToIndex({
 					animated: true,
-					index: currentSlideIndex + 1,
+					index: (currentSlideIndex + 1) % 5,
 				})
 			}, 4000)
 		} else {

@@ -20,13 +20,6 @@ const PostDetails = ({ route, navigation }) => {
 		if (uri) return { uri }
 		return require('../../assets/blank.jpg')
 	}
-	// const rules = {
-	//         paragraph: (node, children, parent, styles) =>
-	//           <Text key={node.key} style={[styles.paragraph]} selectable>
-	//             {children}
-	//           </Text>,
-
-	//     };
 
 	const fetchSinglePosts = async (slug) => {
 		const { error, post } = await getSinglePosts(slug)
@@ -47,7 +40,7 @@ const PostDetails = ({ route, navigation }) => {
 
 		const res = await Linking.canOpenURL(url)
 		if (res) Linking.openURL(url)
-		else Alert.alert('Invalid Url', 'Can not open broken link!')
+		else Alert.alert('Url không hợp lệ', 'Không thể truy cập link!')
 	}
 	return (
 		<ScrollView>
@@ -74,7 +67,7 @@ const PostDetails = ({ route, navigation }) => {
 					paddingVertical: 3,
 				}}
 			>
-				<Text>By {author}</Text>
+				{/* <Text>By {author}</Text> */}
 				<Text>{dateFormat(createdAt, 'mediumDate')}</Text>
 			</View>
 			<View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -108,7 +101,7 @@ const PostDetails = ({ route, navigation }) => {
 						fontSize: 22,
 					}}
 				>
-					Related Posts
+					Tin liên quan
 				</Text>
 				<Seprator width='100%' />
 				<RelatedPosts onPostPress={fetchSinglePosts} postId={post.id} />
