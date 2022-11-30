@@ -1,12 +1,13 @@
 import { View, Text, TouchableWithoutFeedback } from 'react-native'
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import Home from './components/Home'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import PostDetails from './components/PostDetails'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useNavigation } from '@react-navigation/native'
 const Stack = createNativeStackNavigator()
+import Home from './components/Home'
+import Welcome from './components/Welcome'
+import PostDetails from './components/PostDetails'
 
 const isLogin = false
 
@@ -28,7 +29,7 @@ const AppNavigator = () => {
 					headerLeft: (props) => (
 						<TouchableWithoutFeedback
 							{...props}
-							onPress={navigation.goBack}
+							onPress={() => navigation.navigate('Home')}
 						>
 							<View
 								style={{

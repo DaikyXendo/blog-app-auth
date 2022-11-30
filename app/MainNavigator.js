@@ -3,12 +3,12 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import AppForm from './components/AppForm'
 import { useLogin } from './context/LoginProvider'
-import TabNavigator from './TabNavigator'
+import WelcomeNavigator from './WelcomeNavigator'
 
 const Stack = createStackNavigator()
 
 const MainNavigator = () => {
 	const { isLoggedIn } = useLogin()
-	return isLoggedIn ? <TabNavigator /> : <AppForm />
+	return isLoggedIn ? <WelcomeNavigator /> : <AppForm />
 }
 export default MainNavigator
